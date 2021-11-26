@@ -44,21 +44,17 @@ export class HomeComponent implements OnInit {
         .login(this.f.username.value,this.f.password.value,)
         .subscribe(
           (res) => {          
-          //  console.log(res);
-            
-            if (res) {
-              // console.log("res",""+res[0].message)
-              
-              if (res.message == "Successfully logged in") {
-                  console.log("you are logged in")
-               this.router.navigate(['/main']);
-              }
-            } else {
-              console.log("Invalid Login"); ;
+            console.log(res);      
+              if (res.message == "User not found") {
+                console.log("User not found")            
             }
+            else if(res.message =="Successfully logged in"){
+              console.log("you are logged in");
+              this.router.navigate(['/main']);
+            }             
           },
           (error: string) => {
-         
+            console.log("User not found")
             console.log("test",""+error);
            
           }
