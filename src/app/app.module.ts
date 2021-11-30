@@ -20,6 +20,8 @@ import { AllbrandsComponent } from './products/allbrands/allbrands.component';
 import { TopbrandsComponent } from './products/topbrands/topbrands.component';
 import { MainpageComponent } from './layout/mainpage/mainpage.component';
 import { BannerComponent } from './layout/banner/banner.component';
+import { CartComponent } from './store/cart/cart.component';
+import { WishlistComponent } from './store/wishlist/wishlist.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +32,9 @@ import { BannerComponent } from './layout/banner/banner.component';
     AllbrandsComponent,
     TopbrandsComponent,
     MainpageComponent,
-    BannerComponent
+    BannerComponent,
+    CartComponent,
+    WishlistComponent
   ],
   imports: [
     BrowserModule,

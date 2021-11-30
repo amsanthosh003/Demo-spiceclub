@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RequestService } from 'src/app/service/request.service';
-
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { User } from '../../core/models/user';
+import { HttpHeaders } from '@angular/common/http';
 @Component({
   selector: 'app-allbrands',
   templateUrl: './allbrands.component.html',
   styleUrls: ['./allbrands.component.css']
 })
+
 export class AllbrandsComponent implements OnInit {
   loadingIndicator: boolean | undefined;
   Allbrands: any;
@@ -20,14 +23,45 @@ export class AllbrandsComponent implements OnInit {
   Peoduct: any;
   page3: boolean=false;
   openproduct: any;
-  product_id: any;
+  selectedValue: any;
   Topsell: any;
+  quantityy:any
+  currentUserSubject: BehaviorSubject<User>;
+  currentUser: Observable<User>;
+  prodid:any
+   _values1 = [" 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
+  product_id: any;
+  currentPrice: number | undefined;
+  currentdetail: User;
+  userid: any;
+  accesstoken: any;
+  tokentype: any;
+  // currentPrice: number;
 
-  constructor(private router: Router,private fb: FormBuilder,private request: RequestService,) { }
+
+   
+  constructor(private router: Router,private fb: FormBuilder,private request: RequestService,) { 
+      
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser')||'{}')
+      
+    );
+    console.log("currentuser details=", this.currentUserSubject);
+    this.currentUser = this.currentUserSubject.asObservable();
+     this.currentdetail = this.currentUserSubject.value;
+     this.userid=this.currentdetail.user.id;
+     this.accesstoken=this.currentdetail.access_token;
+     this.tokentype=this.currentdetail.token_type;
+    //  console.log("currentuser=", this.currentUser);
+    //  console.log("currentusezr=",  this.currentdetail.access_token);
+ 
+  }
 
   ngOnInit(): void {
-    this.viewdata()
+    this.viewdata();
+    // console.log("currentuser=", this.quantityy);
   }
+
   
 viewdata(){
   this.request.getallbrands().subscribe((response: any) => {
@@ -74,46 +108,111 @@ console.log("detail", this.openproduct);
   this.viewbrandproduct();
 }
 
-viewbrandproduct(){
-  var product_id
+
+ viewbrandproduct(){
+ var product_id
   this.request.viewbrandsproducd(this.openproduct).subscribe((response: any) => {
     // this.data = data;
     // this.filteredData = data;
     this.Peoduct=response.data[0];
-     product_id=this.Peoduct.id;
-    console.log("topsellis",product_id);
-   console.log("response.data",this.Peoduct);
+    product_id=this.Peoduct.id;
+    console.log("product id",product_id);
+ 
     this.page1=false,
     this.page2=false,
     this.page3=true,
-  
+    this.topsellingproduct(product_id)
     // this.filteredData=data.response;
-    setTimeout(() => {
-      this.loadingIndicator = false;
-    }, 500);
-  });
-  console.log("topsellis",product_id);
-this.topsellingproduct();
-}
-topsellingproduct(){
-  // console.log("topsellis",product_id);
-  
-  console.log("topsellis",this.product_id);
-  this.request.topsellproduct(this.product_id).subscribe((response: any) => {
-    // this.data = data;
-    // this.filteredData = data;
-    this.Topsell=response;
-    // this.product_id=this.Peoduct.id;
-
-    console.log("response.data",this.Topsell
-    );
+    //  return{
+    //    prodid :product_id
  
-  
-    // this.filteredData=data.response;
+    //  }
+    
+     
+    setTimeout(() => {
+      this.loadingIndicator = false;
+    }, 500); 
+    
+  }
+  ); 
+}
+
+topsellingproduct(product_id:any){
+  this.request.topsellproduct(product_id).subscribe((response: any) => {
+    this.Topsell=response;
+
+    var month = this.Topsell.data;
+    var connectgiv = [];
+    for (var i = 0; i < month?.length; i++) {
+    connectgiv.push(month[i].name);
+
+   }
+   console.log("mon",connectgiv );
     setTimeout(() => {
       this.loadingIndicator = false;
     }, 500);
   });
+}
+firstDropDownChanged(data: any) 
+{
+  console.log(data.target.value);
+  this.quantityy=data.target.value;
+    return this.quantityy= this.quantityy; 
+}
+addtocart(_id:any){
+  let edata={
+    id : _id,
+    variant:"",
+    user_id: this.userid,
+    quantity: 2
+  }
+  console.log(edata);  
+  this.request.addtocart(edata).subscribe((res: any) => {
+    console.log(res);
+    if (res.message == 'Product added to cart successfully') {       
+    }
+    else  {
+      console.log("error",res);
+
+    }
+  }, (error: any) => {
+    console.log("error",error);
+  
+  });
+}
+addtowishlist(prd_id:any){
+  let edata4={
+    user_id:this.userid,
+    product_id:prd_id
+  }
+  console.log(edata4);  
+  this.request.addtowishlist(edata4).subscribe((res: any) => {
+    console.log(res);
+    // if (res.message == 'Product added to cart successfully') {       
+    // }
+    // else  {
+    //   console.log("error",res);
+
+    // }
+  }, (error: any) => {
+    console.log("error",error);
+  
+  });
+
 
 }
+// cartprocess(){
+  
+//   var processstr = this.Topsell.data;
+//   var connectgiv = [];
+//   for (var i = 0; i < processstr?.length; i++) {
+//   connectgiv.push(processstr[i].name);
+
+//  }
+//  console.log("mon",connectgiv );
+// }
+
 }
+
+
+

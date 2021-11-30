@@ -8,6 +8,8 @@ import { MainComponent } from './main/main.component';
 import { AllbrandsComponent } from './products/allbrands/allbrands.component';
 import { TopbrandsComponent } from './products/topbrands/topbrands.component';
 import { SignupComponent } from './signup/signup.component';
+import { CartComponent } from './store/cart/cart.component';
+import { WishlistComponent } from './store/wishlist/wishlist.component';
 
 const routes: Routes = [
   { path: 'login', component: HomeComponent },
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'allbrands', component: AllbrandsComponent },
   { path: 'topbrands', component: TopbrandsComponent },
   { path: 'banner', component: BannerComponent },
+  { path: 'cart', component: CartComponent },
+  { path: 'wishlist', component: WishlistComponent }
 ];
 
 @NgModule({

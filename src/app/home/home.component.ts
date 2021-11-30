@@ -32,29 +32,36 @@ export class HomeComponent implements OnInit {
     //  this.disable=true;
     console.log("submited");  
     if (this.loginForm.invalid) {
-      //  this.disable=false;
-     
+      //  this.disable=false;   
       console.log("err2",);
-      return;
-  
+      return;  
     } else {
-     
-      // current user by login is stored in local storage -see authservice
       this.authService
         .login(this.f.username.value,this.f.password.value,)
         .subscribe(
           (res) => {          
-            console.log(res);      
+            // console.log(res); 
+
+            if (res) {
+            
               if (res.message == "User not found") {
-                console.log("User not found")            
+                console.log("User not found");               
+                return;
+              }
+              if (res.message == "Unauthorized") {  
+                console.log("Unauthorized");  
+              }
+              if (res.message == "Successfully logged in") {  
+                console.log("hiii you are logged in");
+                this.router.navigate(['/main']);
+              }
+            } else {
+              console.log("Invalid Login"); 
             }
-            else if(res.message =="Successfully logged in"){
-              console.log("you are logged in");
-              this.router.navigate(['/main']);
-            }             
+            
           },
           (error: string) => {
-            console.log("User not found")
+            console.log("Invalid email or password")
             console.log("test",""+error);
            
           }

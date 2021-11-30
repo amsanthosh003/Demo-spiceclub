@@ -3,34 +3,41 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
+import { User } from '../core/models/user';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   url: string | undefined;
-
-  // private endPoint1 = "https://admin.jcombiz.com/jcomweb/login.php"
+  private currentUserSubject: BehaviorSubject<User>;
+  public currentUser: Observable<User>;
+ 
   private endPoint1 = "https://neophroncrm.com/spiceclubnew/api/v2"
-  
+ 
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem('currentUser')||'{}')
+    );
+    this.currentUser = this.currentUserSubject.asObservable();
+   }
+  public get currentUserValue(): User {
+    return this.currentUserSubject.value;
+  }
 
   login(email: string, password: string) { 
-    const headers = new Headers();
-    headers.append('Access-Control-Allow-Headers', 'Content-Type');
-    headers.append('Access-Control-Allow-Methods', 'GET,POST');
-    headers.append('Access-Control-Allow-Origin', '*');
-    this.url = `${this.endPoint1}/auth/login`;
-    return this.http.post<any>(this.url,{headers: headers,  email, password,})
-
+    // const headers = new Headers();
+    // headers.append('Access-Control-Allow-Headers', 'Content-Type');
+    // headers.append('Access-Control-Allow-Methods', 'GET,POST');
+    // headers.append('Access-Control-Allow-Origin', '*');
+     this.url = `${this.endPoint1}/auth/login`;
+     return this.http.post<any>(this.url,{ email, password,}) 
       .pipe(
         map((user) => {
-       localStorage.setItem('currentUser', JSON.stringify(user));
-          // this.currentUserSubject.next(user);
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
           console.log("currentuser:",user);
           return user;
-         
         })
       );
   }
