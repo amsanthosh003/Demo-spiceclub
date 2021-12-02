@@ -12,7 +12,7 @@ import { AuthService } from '../service/auth.service';
 export class ForgotComponent implements OnInit {
   meetings = [
 
-    { id: 'mobile', value: 'mobile' },
+    { id: 'phone', value: 'phone' },
     { id: 'email', value: 'email' },
 
   ];

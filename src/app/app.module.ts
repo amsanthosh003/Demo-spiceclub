@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -22,6 +22,12 @@ import { MainpageComponent } from './layout/mainpage/mainpage.component';
 import { BannerComponent } from './layout/banner/banner.component';
 import { CartComponent } from './store/cart/cart.component';
 import { WishlistComponent } from './store/wishlist/wishlist.component';
+import { AddressComponent } from './store/address/address.component';
+import { ShippingcostComponent } from './shipping/shippingcost/shippingcost.component';
+import { FeaturedComponent } from './products/featured/featured.component';
+import { BestsellingComponent } from './products/bestselling/bestselling.component';
+import { OrdersComponent } from './store/orders/orders.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,15 +40,20 @@ import { WishlistComponent } from './store/wishlist/wishlist.component';
     MainpageComponent,
     BannerComponent,
     CartComponent,
-    WishlistComponent
+    WishlistComponent,
+    AddressComponent,
+    ShippingcostComponent,
+    FeaturedComponent,
+    BestsellingComponent,
+    OrdersComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule,CommonModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

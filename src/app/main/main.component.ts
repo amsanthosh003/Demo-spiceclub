@@ -22,22 +22,22 @@ export class MainComponent implements OnInit {
       JSON.parse(localStorage.getItem('currentUser')||'{}')
       
     );
-    console.log("currentuser details=", this.currentUserSubject);
+    // console.log("currentuser details=", this.currentUserSubject);
     this.currentUser = this.currentUserSubject.asObservable();
     // this.memberid = this.currentUserSubject.value[0]
     //  console.log("currentuser details=", this.currentUser);
   }
 
   ngOnInit(): void {
-    console.log("current user",this.currentUser);
-    console.log("user",User);
+    // console.log("current user",this.currentUser);
+    // console.log("user",User);
   }
   logout(){
-    console.log("loggg")
+    console.log("logggouttt")
     this.authService.logout().subscribe( res=>{
       console.log("res",res);
-      if(res.success==false){
-      this.router.navigate(['/login']);}
+      // if(res.message == "Successfully logged out"){
+      // this.router.navigate(['/login']);}
     })
   }
 

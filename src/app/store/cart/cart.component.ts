@@ -21,6 +21,13 @@ export class CartComponent implements OnInit {
   _values1 = [" 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
   quantityy: any;
   Summery: any;
+  Address: any;
+  Scost: any;
+  cost: any;
+  cosst: boolean=false;
+  caart: boolean=true;
+  owneriid: any;
+  Grandtot: any;
 
 
   constructor(private router: Router,private fb: FormBuilder,private request: RequestService,) {
@@ -35,6 +42,7 @@ export class CartComponent implements OnInit {
      this.accesstoken=this.currentdetail.access_token;
      this.tokentype=this.currentdetail.token_type;
      console.log("currentuserid=", this.userid);
+     console.log("currentuserdetail=", this.currentdetail);
    }
 
   ngOnInit(): void {
@@ -44,7 +52,10 @@ export class CartComponent implements OnInit {
   viewcart(){
     this.request.fetchusercart(this.userid).subscribe((response: any) => {
       this.Cart=response;   
-      console.log("cart",response);     
+      console.log("cart",response);   
+      console.log("owner id",this.Cart[0].owner_id);
+      this.owneriid=this.Cart[0].owner_id;
+
     // this. processdata()
       setTimeout(() => {
         this.loadingIndicator = false;
@@ -74,6 +85,7 @@ export class CartComponent implements OnInit {
       if(response.message=="Product is successfully removed from your cart"){
         console.log("deleted");
         this.viewcart();
+        this.viewcart3();
       }
       else{
         console.log("error ,product is not deleted")
@@ -94,19 +106,51 @@ export class CartComponent implements OnInit {
 
      this.request.updatecart(edata2).subscribe((response:any) => {
        console.log("response",response);
+       this.viewcart();
        this.viewcart3();
      });
   }
   viewcart3(){
     this.request.fetchsummery(this.userid).subscribe((response: any) => {
       this.Summery=response;   
-      console.log("summery",response);     
+      this.Grandtot=this.Summery.grand_total
+      console.log("summery",response);    
+      console.log("grand total",this.Summery.grand_total); 
     // this. processdata()
       setTimeout(() => {
         this.loadingIndicator = false;
       }, 500);
     });
   
+  }
+
+  proshipping(){
+    this.caart=false
+    this.cosst=true;
+    this.getaddress();
+  }
+
+  getaddress(){
+    this.request.fetchaddress(this.userid).subscribe((response: any) => {
+      this.Address=response.data;   
+      console.log("Address",this.Address);     
+    // this. processdata()    
+    });
+  }
+  shippingcost(row:any){
+    console.log("row id",row.city_name); 
+    let edata={
+      owner_id:this.owneriid,
+      user_id:this.userid,
+      city_name:row.city_name
+    }
+    console.log("edatat",edata); 
+    this.request.fetchcost(edata).subscribe((response: any) => {
+      this.Scost=response; 
+      this. cost= this.Scost.value_string
+      console.log("Scost",this.cost);     
+    // this. processdata()    
+    });
   }
 
 }

@@ -6,9 +6,13 @@ import { BannerComponent } from './layout/banner/banner.component';
 import { MainpageComponent } from './layout/mainpage/mainpage.component';
 import { MainComponent } from './main/main.component';
 import { AllbrandsComponent } from './products/allbrands/allbrands.component';
+import { FeaturedComponent } from './products/featured/featured.component';
 import { TopbrandsComponent } from './products/topbrands/topbrands.component';
+import { ShippingcostComponent } from './shipping/shippingcost/shippingcost.component';
 import { SignupComponent } from './signup/signup.component';
+import { AddressComponent } from './store/address/address.component';
 import { CartComponent } from './store/cart/cart.component';
+import { OrdersComponent } from './store/orders/orders.component';
 import { WishlistComponent } from './store/wishlist/wishlist.component';
 
 const routes: Routes = [
@@ -22,7 +26,12 @@ const routes: Routes = [
   { path: 'topbrands', component: TopbrandsComponent },
   { path: 'banner', component: BannerComponent },
   { path: 'cart', component: CartComponent },
-  { path: 'wishlist', component: WishlistComponent }
+  { path: 'wishlist', component: WishlistComponent },
+  { path: 'address', component: AddressComponent },
+  { path: 'shippingcost', component: ShippingcostComponent },
+  { path: 'featuredproduct', component: FeaturedComponent },
+  { path: 'orders', component: OrdersComponent }
+
 ];
 
 @NgModule({

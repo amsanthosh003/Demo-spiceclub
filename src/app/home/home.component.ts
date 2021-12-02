@@ -28,20 +28,14 @@ export class HomeComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
-    //  this.disable=true;
-    console.log("submited");  
-    if (this.loginForm.invalid) {
-      //  this.disable=false;   
+  onSubmit() {  
+    if (this.loginForm.invalid) {  
       console.log("err2",);
       return;  
     } else {
       this.authService
-        .login(this.f.username.value,this.f.password.value,)
-        .subscribe(
-          (res) => {          
-            // console.log(res); 
-
+        .login(this.f.username.value,this.f.password.value,) .subscribe( (res) => {          
+             console.log(res); 
             if (res) {
             
               if (res.message == "User not found") {
@@ -60,10 +54,19 @@ export class HomeComponent implements OnInit {
             }
             
           },
-          (error: string) => {
-            console.log("Invalid email or password")
-            console.log("test",""+error);
-           
+          (error:any) => {   
+            console.log("test","",error.error);
+            if(error.error.message=="User not found"){
+              console.log("User not found"); 
+            }else if(error.error.message=="Unauthorized"){
+              console.log("Unauthorized"); 
+            }
+            else if(error.error.message=="Please verify your account"){
+              console.log("Please verify your account"); 
+            }
+            else{
+              console.log("error",error.error.message);
+            }  
           }
         );
     }

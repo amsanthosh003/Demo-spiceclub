@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { User } from '../core/models/user';
 @Injectable({
@@ -26,13 +26,12 @@ export class AuthService {
   }
 
   login(email: string, password: string) { 
-    // const headers = new Headers();
-    // headers.append('Access-Control-Allow-Headers', 'Content-Type');
-    // headers.append('Access-Control-Allow-Methods', 'GET,POST');
-    // headers.append('Access-Control-Allow-Origin', '*');
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('X-Requested-With', 'XMLHttpRequest')
      this.url = `${this.endPoint1}/auth/login`;
-     return this.http.post<any>(this.url,{ email, password,}) 
-      .pipe(
+     return this.http.post<any>(this.url,{ email, password},{headers:headers}).pipe( 
+       
         map((user) => {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
@@ -43,7 +42,8 @@ export class AuthService {
   }
   logout() { 
     localStorage.removeItem('currentUser');
-    return of({ success: false });
+    this.currentUserSubject.next(null!);
+    return of({ success: true });
   }
    adduser(body: any) {
     console.log('credentials2',body);

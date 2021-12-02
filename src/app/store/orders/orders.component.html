@@ -1,0 +1,66 @@
+
+
+<div class="card-body" *ngFor="let Connectdtls of Orders">
+    <div class="card-header">
+      <h4>orders</h4>
+      <!-- <button (click)="editRow(Connectdtls ,editRecord )" >edit</button>
+      <button (click)="deleteRow(Connectdtls)" >Delete</button> -->
+    </div>
+    <div class="py-4" style="margin-left: 20px; margin-right: 20px;" (click)="viewrow(Connectdtls)">
+      <p class="clearfix">
+        <span class="float-start">
+            code : 
+        </span>
+        <span class="float-right text-muted" style="width: 60%;">
+          {{Connectdtls.code}}
+        </span>
+      </p>
+      <p class="clearfix">
+        <span class="float-start">
+            delivery_status:
+        </span>
+        <span class="float-right text-muted" style="width: 60%;">
+          {{Connectdtls.delivery_status}}
+        </span>
+      </p>
+
+      <p class="clearfix">
+        <span class="float-start">
+            date :
+        </span>
+        <span class="float-right text-muted" style="width: 60%;">
+          {{Connectdtls.date}}
+        </span>
+      </p>
+
+      <p class="clearfix">
+        <span class="float-start">
+            payment_status :
+        </span>
+
+        <span class="float-right text-muted" style="width: 60%;">
+          {{Connectdtls.payment_status}}
+        </span>
+
+      </p>
+      <p class="clearfix">
+        <span class="float-start">
+            grand_total :
+        </span>
+        <span class="float-right text-muted" style="width: 60%; color: red;" >
+          {{Connectdtls.grand_total}}
+        </span>
+
+      </p>
+
+      <p class="clearfix">
+        <span class="float-start">
+          Mobile :
+        </span>
+        <span class="float-right text-muted" style="width: 60%;">
+         {{Connectdtls.phone}}
+        </span>
+
+      </p>
+    </div>
+  </div>

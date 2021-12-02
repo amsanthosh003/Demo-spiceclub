@@ -33,8 +33,8 @@ export class RequestService {
     this.userid = this.currentdetail.user.id;
     this.accesstoken = this.currentdetail.access_token;
     this.tokentype = this.currentdetail.token_type;
-    // console.log("currentuser=", this.currentUser);
-    // console.log("currentusezr=", this.currentdetail.access_token);
+    console.log("currentuser=", this.currentUser);
+    console.log("currentusezr=", this.currentdetail.access_token);
 
   }
 
@@ -77,14 +77,15 @@ export class RequestService {
     this.url = `${this.endPoint1}/banners`;
     return this.http.get(this.url);
   }
+
   public addtocart(body: any) {
   const headers = new HttpHeaders()
       .set('content-type', 'application/json')
       .set('Authorization', 'Bearer'+' '+ this.accesstoken)
       // .set('Access-Control-Allow-Origin', '*')
       this.url = `${this.endPoint1}/carts/add`;
-    // console.log("sts",newconnect)
-      return this.http.post(this.url, body, {headers:headers});
+      console.log("sts",this.url)
+      return this.http.post(this.url,body,{headers:headers});
    
   }
   public fetchusercart(id:any,) {  
@@ -92,10 +93,8 @@ export class RequestService {
     .set('content-type', 'application/json')
     .set('Authorization', 'Bearer'+' '+ this.accesstoken)
     this.url = `${this.endPoint1}/carts/` + id;
-    console.log("sts",this.url)
-    return this.http.post(this.url,null,{headers:headers});
-    
-    
+    console.log("sts",headers)
+    return this.http.post(this.url,null,{headers:headers});      
   }
   public fetchcartprocess(body:any) {
     const headers = new HttpHeaders()
@@ -138,5 +137,98 @@ public addtowishlist(body: any) {
       return this.http.post(this.url, body, {headers:headers});
    
   }
+
+  public fetchuserwishlist(id:any,) {  
+    const headers = new HttpHeaders() 
+    .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+    this.url = `${this.endPoint1}/wishlists/` + id;
+    console.log("sts",this.url)
+    return this.http.get(this.url,{headers:headers});      
+  }
+  deletewishproud(id:any) {  
+    const headers = new HttpHeaders()
+    
+    .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+    this.url = `${this.endPoint1}/wishlists/` + id;
+    return this.http.delete(this.url,{headers:headers});
+}
+// address
+public addaddress(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)    
+   this.url = `${this.endPoint1}/user/shipping/create`;
+   return this.http.post(this.url,body,{headers:headers});
+}
+public fetchcountry() {
+  this.url = `${this.endPoint1}/countries`;
+  return this.http.get(this.url);
+}
+public fetchstate() {
+  this.url = `${this.endPoint1}/states`;
+  return this.http.get(this.url);
+}
+public fetchCity() {
+  this.url = `${this.endPoint1}/cities`;
+  return this.http.get(this.url);
+}
+public fetchaddress(id:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/user/shipping/address/` + id;
+  return this.http.get(this.url,{headers:headers});
+}
+public updateaddress(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/user/shipping/update`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+deleteaddress(id:any) {  
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/user/shipping/delete/` + id;
+  return this.http.get(this.url,{headers:headers});
+}
+public fetchcost(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/shipping_cost`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+// futuredproduct
+public getfuturedpro() {
+  this.url = `${this.endPoint1}/products/featured`;
+  return this.http.get(this.url);
+}
+// bestseling pro
+public getbestsellpro() {
+  this.url = `${this.endPoint1}/products/best-seller`;
+  return this.http.get(this.url);
+}
+// orders
+public fetchOrders(id:any) {
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)    
+   this.url = `${this.endPoint1}/purchase-history/`  + id;
+   return this.http.get(this.url,{headers:headers});
+}
+public vieworderdetail(id:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/purchase-history-details/` + id;
+  return this.http.get(this.url,{headers:headers});
+}
+public vieworderitems(id:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/purchase-history-items/` + id;
+  return this.http.get(this.url,{headers:headers});
+}
 
 }
