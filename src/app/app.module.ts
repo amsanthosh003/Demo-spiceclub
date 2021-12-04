@@ -27,6 +27,17 @@ import { ShippingcostComponent } from './shipping/shippingcost/shippingcost.comp
 import { FeaturedComponent } from './products/featured/featured.component';
 import { BestsellingComponent } from './products/bestselling/bestselling.component';
 import { OrdersComponent } from './store/orders/orders.component';
+import { ArchwizardModule } from 'angular-archwizard';
+import { AllcategoryComponent } from './products/allcategory/allcategory.component';
+import { CategoryComponent } from './products/category/category.component';
+import { ShopbyproductComponent } from './products/shopbyproduct/shopbyproduct.component';
+import { SearchedComponent } from './products/searched/searched.component';
+import { SelershopComponent } from './products/selershop/selershop.component';
+import { WalletComponent } from './store/wallet/wallet.component';
+import { RecipeComponent } from './products/recipe/recipe.component';
+import { FeedbacksComponent } from './store/feedbacks/feedbacks.component';
+import { MessageComponent } from './store/message/message.component';
+import { ProfileComponent } from './store/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +56,18 @@ import { OrdersComponent } from './store/orders/orders.component';
     ShippingcostComponent,
     FeaturedComponent,
     BestsellingComponent,
-    OrdersComponent
+    OrdersComponent,
+    AllcategoryComponent,
+    CategoryComponent,
+    ShopbyproductComponent,
+    SearchedComponent,
+    SelershopComponent,
+    WalletComponent,
+    RecipeComponent,
+    FeedbacksComponent,
+    MessageComponent,
+    ProfileComponent,
+    
   ],
   imports: [
     BrowserModule,CommonModule,
@@ -53,7 +75,7 @@ import { OrdersComponent } from './store/orders/orders.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule,
+    NgbModule,ArchwizardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

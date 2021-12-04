@@ -30,7 +30,7 @@ export class RequestService {
     console.log("currentuser details=", this.currentUserSubject);
     this.currentUser = this.currentUserSubject.asObservable();
     this.currentdetail = this.currentUserSubject.value;
-    this.userid = this.currentdetail.user.id;
+    // this.userid = this.currentdetail?.user.id;
     this.accesstoken = this.currentdetail.access_token;
     this.tokentype = this.currentdetail.token_type;
     console.log("currentuser=", this.currentUser);
@@ -64,6 +64,11 @@ export class RequestService {
     this.url = `${this.endPoint1}/categories/featured`;
     return this.http.get(this.url);
   }
+  public gettodaysdeal() {
+    this.url = `${this.endPoint1}/products/todays-deal`;
+    return this.http.get(this.url);
+  }
+
 
   public viewallfeatured(link: string) {
     return this.http.get(link);
@@ -186,6 +191,14 @@ public updateaddress(body:any) {
   this.url = `${this.endPoint1}/user/shipping/update`;
   return this.http.post(this.url,body,{headers:headers});
 }
+
+public updateshippingaddress(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/update-address-in-cart`;
+  return this.http.post(this.url,body,{headers:headers});
+}
 deleteaddress(id:any) {  
   const headers = new HttpHeaders()
   .set('Authorization', 'Bearer'+' '+ this.accesstoken)
@@ -230,5 +243,153 @@ public vieworderitems(id:any) {
   this.url = `${this.endPoint1}/purchase-history-items/` + id;
   return this.http.get(this.url,{headers:headers});
 }
+// paymenttype
+public fetchpaytype() {
+  this.url = `${this.endPoint1}/payment-types`;
+  return this.http.get(this.url);
+}
+// placeorder
+public placeorder(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/order/store`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+// all category
+public getallcat() {
+  this.url = `${this.endPoint1}/categories`;
+  return this.http.get(this.url);
+}
+// cat prod
+public getcatprod(link: string) {
+  return this.http.get(link);
+}
+//subcategory
+public getcatsubprod(link: string) {
+  return this.http.get(link);
+}
+// shopbyproducts
+public getallproducts() { 
+  this.url = `${this.endPoint1}/products?page=` + 1;
+  return this.http.get(this.url,);
+}
+// productbybrand
 
+public getbrandprod(id: string) {
+  this.url = `${this.endPoint1}/products/brand/` + id +'?page=1';
+  return this.http.get(this.url);
+}
+//prod detail
+public getproddetail(id: string) {
+  this.url = `${this.endPoint1}/products/` + id ;
+  return this.http.get(this.url);
+}
+public getcatprodbyid(id: string) {
+  this.url = `${this.endPoint1}/products/category/` + id +`?page=1&name=`;
+  return this.http.get(this.url);
+}
+//related product
+public getrelatedprod(id: string) {
+  this.url = `${this.endPoint1}/products/related/` + id ;
+  return this.http.get(this.url);
+}
+public addvarient(id: string,varient:any) {
+  this.url = `${this.endPoint1}/products/variant/price?id=` + id +`&color=` +`&variants=` + varient;
+  return this.http.get(this.url);
+}
+public getsortprod(sort: string) {
+  this.url = `${this.endPoint1}/products/search?sort_key=` + sort ;
+  return this.http.get(this.url);
+}
+public filterdataa(category:any,min:any,max:any) {
+  this.url = `${this.endPoint1}/products/search?categories=` + category +`&brands=` +`&name=` +`&min=` + min +`&max=` +max ;
+  return this.http.get(this.url);
+}
+public filtersearchdataa(name:any) {
+  this.url = `${this.endPoint1}/products/search?name=`  +name ;
+  return this.http.get(this.url);
+}
+//review
+public addreview(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/reviews/submit`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+//shops
+public getallshop( ) {
+  this.url = `${this.endPoint1}/shops`;
+  return this.http.get(this.url); 
+}
+
+public getshopdetails(id: string) {
+  this.url = `${this.endPoint1}/shops/details/` + id ;
+  return this.http.get(this.url);
+}
+public getnewarrival(id: string) {
+  this.url = `${this.endPoint1}/shops/products/new/` + id ;
+  return this.http.get(this.url);
+}
+public getshopfeatured(id: string) {
+  this.url = `${this.endPoint1}/shops/products/featured/` + id ;
+  return this.http.get(this.url);
+}
+public gettopshop(id: string) {
+  this.url = `${this.endPoint1}/shops/products/top/` + id ;
+  return this.http.get(this.url);
+}
+
+public fetchwallet(id: string) {
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/wallet/balance/` + id ;
+  return this.http.get(this.url,{headers:headers});
+}
+public fetchrechisttory(id: string) {
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/wallet/history/` + id ;
+  return this.http.get(this.url,{headers:headers});
+}
+//recipe
+public getallrecipecat() {
+  this.url = `${this.endPoint1}/recipe/categories`;
+  return this.http.get(this.url);
+}
+public getrecipebycat(id: string) {
+  this.url = `${this.endPoint1}/recipe/category/` + id+`?page=1` ;
+  return this.http.get(this.url);
+}
+public getrecipedetail(id: string) {
+  this.url = `${this.endPoint1}/recipe/` + id ;
+  return this.http.get(this.url);
+}
+public getcomments(id: string) {
+  this.url = `${this.endPoint1}/recipecomment/recipe/` + id ;
+  return this.http.get(this.url);
+}
+public addrecipecomment(body:any) {
+  this.url = `${this.endPoint1}/recipecomment/submit`;
+  return this.http.post(this.url,body);
+}
+//feedbacks
+public getfeedbacks() {
+  this.url = `${this.endPoint1}/feedback`;
+  return this.http.get(this.url);
+}
+public addfeedback(body:any) {
+  this.url = `${this.endPoint1}/feedback/submit`;
+  return this.http.post(this.url,body);
+}
+//coupan
+public appycoupan(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/reviews/submit`;
+  this.url = `${this.endPoint1}/coupon-apply`;
+  return this.http.post(this.url,body,{headers:headers});
+}
 }

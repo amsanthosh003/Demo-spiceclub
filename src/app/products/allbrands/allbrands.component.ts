@@ -49,7 +49,7 @@ export class AllbrandsComponent implements OnInit {
     console.log("currentuser details=", this.currentUserSubject);
     this.currentUser = this.currentUserSubject.asObservable();
      this.currentdetail = this.currentUserSubject.value;
-     this.userid=this.currentdetail.user.id;
+     this.userid=this.currentdetail.user.id; 
      this.accesstoken=this.currentdetail.access_token;
      this.tokentype=this.currentdetail.token_type;
     //  console.log("currentuser=", this.currentUser);

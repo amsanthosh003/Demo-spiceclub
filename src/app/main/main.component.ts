@@ -14,6 +14,8 @@ export class MainComponent implements OnInit {
 
   currentUserSubject: BehaviorSubject<User>;
   currentUser: Observable<User>;
+  userid?: any;
+  currentdetail: any;
 
   constructor(private authService: AuthService,private router: Router, private fb: FormBuilder, private formBuilder: FormBuilder,) { 
   
@@ -24,8 +26,10 @@ export class MainComponent implements OnInit {
     );
     // console.log("currentuser details=", this.currentUserSubject);
     this.currentUser = this.currentUserSubject.asObservable();
+    this.currentdetail = this.currentUserSubject.value;
+    this.userid=this.currentdetail.user.id; 
     // this.memberid = this.currentUserSubject.value[0]
-    //  console.log("currentuser details=", this.currentUser);
+     console.log("currentuser id=", this.userid);
   }
 
   ngOnInit(): void {

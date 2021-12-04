@@ -22,7 +22,7 @@ export class BestsellingComponent implements OnInit {
   currentUserSubject: BehaviorSubject<User>;
   currentUser: Observable<User>;
   prodid:any
-   _values1 = [" 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
+   _values1 = [" 0 "," 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
   product_id: any;
   currentPrice: number | undefined;
   currentdetail: User;
@@ -30,6 +30,9 @@ export class BestsellingComponent implements OnInit {
   accesstoken: any;
   tokentype: any;
   quantityy: any;
+  choice: any;
+  varprise: any;
+  varient_value: any;
 
   constructor(private router: Router,private fb: FormBuilder,private request: RequestService) {
     this.currentUserSubject = new BehaviorSubject<User>(
@@ -39,7 +42,7 @@ export class BestsellingComponent implements OnInit {
     console.log("currentuser details=", this.currentUserSubject);
     this.currentUser = this.currentUserSubject.asObservable();
      this.currentdetail = this.currentUserSubject.value;
-     this.userid=this.currentdetail.user.id;
+     this.userid=this.currentdetail.user?.id;
      this.accesstoken=this.currentdetail.access_token;
      this.tokentype=this.currentdetail.token_type;
    }
@@ -63,6 +66,7 @@ viewfuturedpro(){
 viewproductrow(img: any){
   this.openproduct=img.links.details
 console.log("detail", this.openproduct);
+this.product_id=img.id;
   this.viewrqwproduct();
 } 
 
@@ -73,8 +77,10 @@ viewrqwproduct(){
     // this.filteredData = data;
     this.Peoduct=response.data[0];
      product_id=this.Peoduct.id;
+     this.choice=this.Peoduct.choice_options;
     // console.log("topsellis",product_id);
     console.log("response.data",this.Peoduct);
+    console.log("choiceoptions",this.Peoduct.choice_options); 
     this.page1=false,
     this.page2=true,
   
@@ -96,7 +102,7 @@ firstDropDownChanged(data: any)
 addtocart(_id:any){
   let edata={
     id : _id,
-    variant:"",
+    variant:this.varient_value,
     user_id: this.userid,
     quantity: this.quantityy
   }
@@ -109,6 +115,22 @@ addtocart(_id:any){
       console.log("error",res);
 
     }
+  }, (error: any) => {
+    console.log("error",error);
+  
+  });
+}
+selectvar(weight:any){
+  this.varient_value=weight
+  this.request.addvarient(this.product_id,weight).subscribe((res: any) => {
+    console.log(res);
+    this.varprise=res?.price_string;
+    // if (res.message == 'Product added to cart successfully') {       
+    // }
+    // else  {
+    //   console.log("error",res);
+
+    // }
   }, (error: any) => {
     console.log("error",error);
   

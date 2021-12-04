@@ -20,6 +20,7 @@ export class BannerComponent implements OnInit {
   Peoduct: any;
   page3: boolean=false;
   Banners: any;
+  Todaysdeal: any;
 
   constructor(private router: Router,private fb: FormBuilder,private request: RequestService) { }
 
@@ -27,6 +28,7 @@ export class BannerComponent implements OnInit {
     this.viewdata();
     this.viewdata2();
     this.viewdata3();
+    this.viewdata4();
 
   }
   viewdata(){
@@ -71,6 +73,14 @@ viewdata3(){
       this.loadingIndicator = false;
     }, 500);
   });
+}
+viewdata4(){
+  this.request.gettodaysdeal().subscribe((response: any) => {
+    this.Todaysdeal=response.data;
+     console.log("Todaysdeal.data",response.data);
+    console.log("Todaysdeal",this.Todaysdeal);
+  });
+
 }
 viewrow(img: any){
   this.opencat=img.links.products

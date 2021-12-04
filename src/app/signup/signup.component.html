@@ -18,6 +18,12 @@
                             </div><br>
                             <div class="col-md-6">
                                 <div class="form-group position-relative">
+                                    <label>Email </label>
+                                    <input type="text" class="form-control " formControlName="email" required>
+                                </div>
+                            </div><br>
+                            <div class="col-md-6">
+                                <div class="form-group position-relative">
                                     <label>Mobile No </label>
                                     <input type="text" class="form-control " formControlName="Mobile" required>
                                 </div>
@@ -89,10 +95,11 @@
                             <!-- <div *ngIf="error1" class="alert alert-danger mb-3 ml-3">{{error1}}</div> -->
                             <div class="modal-footer">
                               <button type="submit" class="btn btn-primary">Verify</button>
-                              <button  class="btn btn-success"  (click)="resend()">Resend</button>
+                             
                               <!-- <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button> -->
                             </div>
                           </form>
+                          <button  class="btn btn-success"  (click)="resend()">Resend</button>
                         </div> 
                 </ng-template>
                 <div class="col-md-2">

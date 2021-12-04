@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
   Regby = [  
     { id: 'email', value: 'email' },
-    { id: 'mobile', value: 'mobile' },  
+    { id: 'phone', value: 'phone' },  
   ];
   registerForm: FormGroup;
   submitted: boolean | undefined;
@@ -23,7 +23,11 @@ export class SignupComponent implements OnInit {
     private formBuilder: FormBuilder, private authService: AuthService,private modalService: NgbModal,) {
     this.registerForm = this.formBuilder.group({
       fname: ['', Validators.required], 
-      Mobile: ['', [Validators.required],],
+      Mobile: ['', [Validators.required]],
+      email: [
+        '',
+        [Validators.required, Validators.email, Validators.minLength(5)],
+      ],
       password: ['', Validators.required], 
       confirmpassword: ['', Validators.required],
       register_by: ['', Validators.required],
@@ -32,7 +36,7 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.otpform = this.fb.group({ 
-      otp: ['', [Validators.required]],
+      otp: ['', [Validators.required]], 
     });
   }
   get f1() {
@@ -44,10 +48,7 @@ export class SignupComponent implements OnInit {
     
   }
   onSubmit(content: any) {
-    this.modalService.open(content, {
-      ariaLabelledBy: 'modal-basic-title',
-      size: 'lg',
-    });
+   
     this.submitted = true;
 
     if (this.registerForm.invalid) {
@@ -56,7 +57,8 @@ export class SignupComponent implements OnInit {
     } else {
        let edata={
              name:""+this.registerForm.controls['fname'].value,
-             email_or_phone:""+this.registerForm.controls['Mobile'].value,
+             email:""+this.registerForm.controls['email'].value,
+             phone:""+this.registerForm.controls['Mobile'].value,
              password:""+this.registerForm.controls['password'].value,
              passowrd_confirmation:""+this.registerForm.controls['confirmpassword'].value,
              register_by:""+this.registerForm.controls['register_by'].value,      
@@ -65,12 +67,17 @@ export class SignupComponent implements OnInit {
 
       this.authService.adduser(edata).subscribe(
         (res: any) => {
+          console.log("response",res);
           this.userid =res.user_id
           if (res.message == "Registration Successful. Please verify and log in to your account.") {
             console.log("registerForm",""+res.result);
             console.log("response",res);
+            this.modalService.open(content, {
+              ariaLabelledBy: 'modal-basic-title',
+              size: 'lg',
+            });
           } else  {
-            console.log("failresult",""+res.result);
+            console.log("failresult",""+res.message);
            
           }
         },
@@ -94,14 +101,14 @@ export class SignupComponent implements OnInit {
             // this.error1 = 'Incorrect OTP!!Please Try Again!!!!';  
          
         } else {
-           console.log("Code  matched");
+           console.log("Code matched");
            this.router.navigate(['/main']);
           // this.error1 = 'Invalid Login';
         }
       },
       (error1) => {
         // this.error1 = error1;
-        console.log("fail1");
+        console.log("fail1",error1);
         this.submitted = false;
       }
     );

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RequestService } from 'src/app/service/request.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -28,7 +28,9 @@ export class CartComponent implements OnInit {
   caart: boolean=true;
   owneriid: any;
   Grandtot: any;
-
+  Paymenttype: any;
+  payytype: any;
+  comment!: FormGroup;
 
   constructor(private router: Router,private fb: FormBuilder,private request: RequestService,) {
     this.currentUserSubject = new BehaviorSubject<User>(
@@ -48,6 +50,12 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.viewcart();
     this.viewcart3();
+
+    this.comment = this.fb.group({ 
+      
+      coupan: ['',[Validators.required]],
+   
+    });
   }
   viewcart(){
     this.request.fetchusercart(this.userid).subscribe((response: any) => {
@@ -136,21 +144,79 @@ export class CartComponent implements OnInit {
       console.log("Address",this.Address);     
     // this. processdata()    
     });
+    this.paymettype();
   }
   shippingcost(row:any){
     console.log("row id",row.city_name); 
+    console.log("row id",row.id);
+    let edata2={
+      user_id:this.userid,
+      address_id:row.id
+    }
     let edata={
       owner_id:this.owneriid,
       user_id:this.userid,
       city_name:row.city_name
     }
     console.log("edatat",edata); 
+    console.log("edatat",edata2);
     this.request.fetchcost(edata).subscribe((response: any) => {
       this.Scost=response; 
       this. cost= this.Scost.value_string
       console.log("Scost",this.cost);     
     // this. processdata()    
     });
+    this.request.updateshippingaddress(edata2).subscribe((response: any) => {
+      console.log("address changed res",response);     
+    // this. processdata()    
+    });
+
+  }
+  paymettype(){
+    this.request.fetchpaytype().subscribe((response: any) => {
+      this.Paymenttype=response;  
+      console.log("Paymenttype",this.Paymenttype);     
+    // this. processdata()    
+    });
+  }
+  selectpaytype(row:any){
+    console.log("paytype",row.payment_type)
+    this.payytype=row.payment_type
+  }
+  placeorder(){
+    let edata={
+      owner_id:this.owneriid,
+      user_id:this.userid,
+      payment_type:this.payytype
+    }
+    console.log("edatat",edata); 
+    this.request.placeorder(edata).subscribe((response: any) => {
+      console.log("Placeorder",response);     
+       
+    });
+  }
+  applycoupan(form: FormGroup){
+    let edata2={
+      user_id:this.userid,
+      owner_id:this.owneriid,
+      coupon_code:form.value.coupan,
+      
+    }
+    console.log(edata2);  
+    this.request.appycoupan(edata2).subscribe((res: any) => {
+      console.log(res);
+      // if (res.message == 'Feedback  Submitted') {       
+       
+      // }
+      // else  {
+      //   console.log("error",res);
+  
+      // }
+    }, (error: any) => {
+      console.log("error",error);
+    
+    });
+  
   }
 
 }

@@ -7,7 +7,7 @@
             <!-- <img src="assets/images/register.jpg" alt="register" class="register-card-img"> -->
           </div>
 <div class="col-8" >
-<form class="validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form class="validate-form" [formGroup]="loginForm" (ngSubmit)="onSubmit(otpRecord)">
     <h3>log-in</h3>
     <div class="row">
       <div class="col-lg-12">
@@ -55,6 +55,44 @@
   <div class="col-md-2">
     <!-- <img src="assets/images/register.jpg" alt="register" class="register-card-img"> -->
   </div>
+
+  <ng-template #otpRecord let-modal>
+    <div class="modal-header editRowModal">
+        <h4 class="modal-title" id="modal-basic-title">
+            <div class="table-modal-header">
+                <div class="modal-about">
+                    <div class="font-weight-bold p-t-10 font-17">
+                        Waiting For Otp</div>
+                </div>
+            </div>
+        </h4>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true"><i class="material-icons">close</i></span>
+        </button> -->
+    </div>
+     <div class="modal-body">
+          <form class="register-form" [formGroup]="otpform" (ngSubmit)="onAddRowSave(otpform)">
+            <div class="row">
+              <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+                <label>Verification Code<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="otp" formControlName="otp" required>
+                 <!-- <small class="form-text text-danger"
+                  *ngIf="!otpform.get('phone').valid && otpform.get('otp').touched"> Otp is
+                  required</small>  -->
+              </div>                      
+            </div>
+        
+            <!-- <div *ngIf="error1" class="alert alert-danger mb-3 ml-3">{{error1}}</div> -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Verify</button>
+              
+              <!-- <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button> -->
+            </div>
+          </form>
+          <button  class="btn btn-success"  (click)="resend()">Resend</button>
+        </div> 
+</ng-template>
+
 </div>
 </div>
 </div>

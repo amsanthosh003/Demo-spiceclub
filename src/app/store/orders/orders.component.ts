@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { RequestService } from 'src/app/service/request.service';
@@ -23,7 +23,9 @@ export class OrdersComponent implements OnInit {
   loadingIndicator: boolean | undefined;
   page2: boolean=true;
   page1: boolean=false;
-
+  product_iddd: any;
+  register!: FormGroup;
+  _values2 = [" 1 ", "2", " 3 "," 4 "," 5 "];
   constructor(private request: RequestService,  private fb: FormBuilder,
     private modalService: NgbModal,) {
     this.currentUserSubject = new BehaviorSubject<User>(
@@ -42,7 +44,16 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getorders();
-  }
+    this.register = this.fb.group({ 
+      rating:[''],
+      comment: [''],
+   
+    });
+    }
+    get f() {
+      return this.register.controls;
+      
+    }
   getorders(){
     this.request.fetchOrders(this.userid).subscribe((response: any) => {
       this.Orders=response.data;   
@@ -50,7 +61,11 @@ export class OrdersComponent implements OnInit {
     // this. processdata()    
     });
   }
-  viewrow(Connectdtls:any){
+  viewrow(Connectdtls:any,content: any){
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'lg',
+    });
 this.prdid=Connectdtls.id;
   this. viewdetail();
   this.viewitem();
@@ -59,9 +74,9 @@ this.prdid=Connectdtls.id;
  
      this.request.vieworderdetail(this.prdid).subscribe((response: any) => {
    
-       this.Detail=response;
+       this.Detail=response.data;
       //  product_id=this.Peoduct.id;
-       console.log("product detail",response);   
+       console.log("order detail",response);   
        this.page1=false,
        this.page2=true,
        setTimeout(() => {
@@ -74,11 +89,41 @@ this.prdid=Connectdtls.id;
    viewitem(){
  
      this.request.vieworderitems(this.prdid).subscribe((response: any) => {
-     this.Items=response;     
+     this.Items=response.data;     
        console.log("items",this.Items);
        
      }
      ); 
    }
+   addreview(content:any,_id:any){
+    this.product_iddd=_id;
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'lg',
+    });
+
+  }
+  submitreview(form: FormGroup){
+    let edata2={
+      product_id : this.product_iddd,
+      user_id: this.userid,
+      rating:""+this.register.controls['rating'].value,
+      comment: ""+this.register.controls['comment'].value,
+    }
+    console.log(edata2);  
+    this.request.addreview(edata2).subscribe((res: any) => {
+      console.log(res);
+      // if (res.message == 'Product added to cart successfully') {       
+      // }
+      // else  {
+      //   console.log("error",res);
+  
+      // }
+    }, (error: any) => {
+      console.log("error",error);
+    
+    });
+  
+  }
  
 }

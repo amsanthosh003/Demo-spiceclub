@@ -21,7 +21,7 @@ export class FeaturedComponent implements OnInit {
   currentUserSubject: BehaviorSubject<User>;
   currentUser: Observable<User>;
   prodid:any
-   _values1 = [" 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
+   _values1 = [" 0 "," 1 ", "2", " 3 "," 4 "," 5 "," 6 "];
   product_id: any;
   currentPrice: number | undefined;
   currentdetail: User;
