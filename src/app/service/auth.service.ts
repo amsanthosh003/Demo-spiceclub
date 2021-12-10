@@ -4,10 +4,20 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { User } from '../core/models/user';
+
+// function _window() : any {
+//   return window;
+// }
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+//   get nativeWindow() : any {
+//     return _window();
+//  }
+
   url: string | undefined;
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
@@ -25,6 +35,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
+
   login(email: string, password: string) { 
     const headers = new HttpHeaders()
       .set('content-type', 'application/json')
@@ -40,10 +51,30 @@ export class AuthService {
         })
       );
   }
+
+  otplogin(body:any) { 
+     this.url = `${this.endPoint1}/auth/lgoinverifyotp`;
+     return this.http.post<any>(this.url,body).pipe(      
+        map((user) => {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          console.log("currentuser:",user);
+          return user;
+        })
+      );
+  }
+  reqotplogin(body: any) { 
+    this.url = `${this.endPoint1}/auth/loginwithotp`;
+    return this.http.post<any>(this.url, body)
+      
+  }
+
   logout() { 
+    this.url = `${this.endPoint1}/auth/logout`;
+    
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null!);
-    return of({ success: true });
+    return this.http.get<any>(this.url)
   }
    adduser(body: any) {
     console.log('credentials2',body);
@@ -51,7 +82,7 @@ export class AuthService {
     return this.http.post(this.url, body);
   }
 
-  registerotpverification(body: any) { 
+  registerotpverification(body: any) {  
     this.url = `${this.endPoint1}/auth/confirm_code`;
     return this.http.post<any>(this.url, body)
       .pipe(

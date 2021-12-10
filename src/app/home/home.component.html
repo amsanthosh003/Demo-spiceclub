@@ -42,6 +42,9 @@
          
         </ul>
       </div> -->
+       <div class="col-12 text-center">
+        <p class="forgot-pass mb-0" (click)="loginotp(loginotpRequest)">login with otp</p> &nbsp;
+      </div>
      
       <div class="col-12 text-center">
         <p class="forgot-pass mb-0"><a routerLink="/forgot"
@@ -91,6 +94,66 @@
           </form>
           <button  class="btn btn-success"  (click)="resend()">Resend</button>
         </div> 
+</ng-template>
+
+<ng-template #loginotpRequest let-modal>
+  <div class="modal-header editRowModal">
+      <h4 class="modal-title" id="modal-basic-title">
+          <div class="table-modal-header">
+              <div class="modal-about">
+                  <div class="font-weight-bold p-t-10 font-17">
+                     login with otp</div>
+              </div>
+          </div>
+      </h4>
+      <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button> -->
+  </div>
+   <div class="modal-body">
+        <form class="register-form" [formGroup]="loginotpform" (ngSubmit)="requestloginotp(loginotpform,loginotpverify)">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+              <label>Mobile<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="enter your registered mob" formControlName="phone" required>
+            </div>                      
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">send otp</button>
+          </div>
+        </form>
+        <!-- <button  class="btn btn-success"  (click)="resend()">Resend</button> -->
+      </div> 
+</ng-template>
+
+<ng-template #loginotpverify let-modal>
+  <div class="modal-header editRowModal">
+      <h4 class="modal-title" id="modal-basic-title">
+          <div class="table-modal-header">
+              <div class="modal-about">
+                  <div class="font-weight-bold p-t-10 font-17">
+                    enter otp</div>
+              </div>
+          </div>
+      </h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true"><i class="material-icons">close</i></span>
+      </button>
+  </div>
+   <div class="modal-body">
+        <form class="register-form" [formGroup]="loginverifyform" (ngSubmit)="verifyloginotp(loginverifyform)">
+          <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-1">
+              <label>otp<span class="text-danger">*</span></label>
+              <input type="text" class="form-control" placeholder="enter your registered mob" formControlName="otp_code" required>
+            </div>                      
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">login </button>
+          </div>
+        </form>
+        <!-- <button  class="btn btn-success"  (click)="resend()">Resend</button> -->
+      </div> 
 </ng-template>
 
 </div>

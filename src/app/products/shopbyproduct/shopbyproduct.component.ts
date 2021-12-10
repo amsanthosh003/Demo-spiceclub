@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { RequestService } from 'src/app/service/request.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../../core/models/user';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-shopbyproduct',
@@ -40,6 +40,8 @@ export class ShopbyproductComponent implements OnInit {
   choice: any;
   register!: FormGroup;
   product_iddd: any;
+  product_iidd: any;
+  message!: FormGroup;
   constructor(private router: Router,private fb: FormBuilder,private request: RequestService,private modalService: NgbModal,) { 
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser')||'{}')
@@ -61,6 +63,12 @@ export class ShopbyproductComponent implements OnInit {
    this.register = this.fb.group({ 
     rating:[''],
     comment: [''],
+ 
+  });
+
+  this.message = this.fb.group({ 
+    title:['',[Validators.required]],
+    message: ['',[Validators.required]],
  
   });
   }
@@ -131,7 +139,7 @@ ontableChange(tbl_id:any) {
   addtocart(_id:any){
     let edata={
       id : _id,
-      variant:this.varient_value,
+      variant:this?.varient_value,
       user_id: this.userid,
       quantity: this.quantityy
     }
@@ -241,5 +249,34 @@ ontableChange(tbl_id:any) {
     
     });
   
+  }
+  addconv(content:any,_id:any){
+    this.product_iidd=_id;
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'lg',
+    });
+  }
+  sendconv(form:FormGroup){
+    let edata={
+      product_id:this.product_iidd,
+      user_id:this.userid,
+      title:form.value.title,
+      message:form.value.message
+    }
+    console.log("edata,",edata);
+    this.request.addconv(edata).subscribe((res: any) => {
+      console.log(res);
+      if (res.message == 'Conversation created') {   
+        this.modalService.dismissAll();    
+      }
+      else  {
+        console.log("error",res);
+  
+      }
+    }, (error: any) => {
+      console.log("error",error); 
+    });
+
   }
 }

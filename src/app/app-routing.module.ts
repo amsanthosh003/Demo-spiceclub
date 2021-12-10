@@ -17,9 +17,11 @@ import { ShippingcostComponent } from './shipping/shippingcost/shippingcost.comp
 import { SignupComponent } from './signup/signup.component';
 import { AddressComponent } from './store/address/address.component';
 import { CartComponent } from './store/cart/cart.component';
+import { ConvertationComponent } from './store/convertation/convertation.component';
 import { FeedbacksComponent } from './store/feedbacks/feedbacks.component';
 import { MessageComponent } from './store/message/message.component';
 import { OrdersComponent } from './store/orders/orders.component';
+import { ProfileComponent } from './store/profile/profile.component';
 import { WalletComponent } from './store/wallet/wallet.component';
 import { WishlistComponent } from './store/wishlist/wishlist.component';
 
@@ -42,11 +44,13 @@ const routes: Routes = [
   { path: 'allcategory', component: AllcategoryComponent },
   { path: 'shopbyproduct', component: ShopbyproductComponent },
   { path: 'searchproduct', component: SearchedComponent },
-  { path: 'sellershop', component: SelershopComponent },
+  { path: 'sellershop', component: SelershopComponent },  
   { path: 'wallet', component: WalletComponent },
   { path: 'Recipe', component: RecipeComponent },
   { path: 'feedbacks', component: FeedbacksComponent },
-  { path: 'message', component: MessageComponent }
+  { path: 'message', component: MessageComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'convertation', component: ConvertationComponent}
 
 ];
 

@@ -38,6 +38,7 @@ import { RecipeComponent } from './products/recipe/recipe.component';
 import { FeedbacksComponent } from './store/feedbacks/feedbacks.component';
 import { MessageComponent } from './store/message/message.component';
 import { ProfileComponent } from './store/profile/profile.component';
+import { ConvertationComponent } from './store/convertation/convertation.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ProfileComponent } from './store/profile/profile.component';
     FeedbacksComponent,
     MessageComponent,
     ProfileComponent,
+    ConvertationComponent,
     
   ],
   imports: [

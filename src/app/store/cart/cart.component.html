@@ -174,6 +174,36 @@
               <li class="next list-inline-item float-end"><button class="btn btn-primary" (click)="placeorder()">Place order</button>
               </li>
             </ul>
+            <!-- <button  (click)="initPay()">Pay</button> -->
+
+            <h3>Click Here! to go CCAvenue</h3>
+            <button mat-button (click)="checkout()">Checkout Payment Gateway</button>
+        
+          <form #form ngNoForm
+          id="nonseamless" 
+          method="post" 
+          name="redirect" 
+          action="https://uat.billdesk.com/pgidsk/PGIMerchantPayment">
+            <input type="hidden" id="encRequest" name="encRequest" value="{{encRequestRes}}">
+            <input type="hidden" name="access_code" id="access_code" value="{{accessCode}}">
+        </form>
+
+            <!-- <div class="container">
+              <div class="row">
+                <h1>Proceed to Pay</h1>
+                <button (click)="pay()"></button>
+              </div>
+            </div>
+            
+            
+            <form #form ngNoForm 
+                  id="nonseamless" 
+                  method="post"
+                  name="redirect" 
+                  action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+              <input type="hidden" id="encRequest" name="encRequest" [ngModel]="encRequest">
+              <input type="hidden" name="access_code" id="access_code" [ngModel]="accessCode">
+            </form> -->
           </aw-wizard-step>
 
           <!-- <aw-wizard-step stepTitle="payment type">

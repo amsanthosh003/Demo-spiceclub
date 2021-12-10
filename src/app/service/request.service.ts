@@ -38,6 +38,15 @@ export class RequestService {
 
   }
 
+  logout() { 
+    this.url = `${this.endPoint1}/auth/logout`;
+    const headers = new HttpHeaders()
+
+    .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null!);
+    return this.http.get(this.url,{headers:headers})
+  }
 
   public getallbrands() {
     this.url = `${this.endPoint1}/brands`;
@@ -181,6 +190,7 @@ public fetchaddress(id:any) {
   const headers = new HttpHeaders()
   .set('content-type', 'application/json')
   .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  console.log("headers",headers)
   this.url = `${this.endPoint1}/user/shipping/address/` + id;
   return this.http.get(this.url,{headers:headers});
 }
@@ -388,8 +398,68 @@ public appycoupan(body:any) {
   const headers = new HttpHeaders()
   .set('content-type', 'application/json')
   .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
-  this.url = `${this.endPoint1}/reviews/submit`;
   this.url = `${this.endPoint1}/coupon-apply`;
   return this.http.post(this.url,body,{headers:headers});
 }
+//profile
+public getcountes(id: string) {
+  const headers = new HttpHeaders()
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/profile/counters/` + id ;
+  console.log("url",this.url)
+  return this.http.get(this.url,{headers:headers});
+
+}
+public updateProfile(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/profile/update`;
+  return this.http.post(this.url,body,{headers:headers});
+} 
+public changeimg(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken) 
+  this.url = `${this.endPoint1}/profile/update-image`;
+  return this.http.post(this.url,body,{headers:headers});
+} 
+// convertation
+public addconv(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/chat/create-conversation`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+public getallconv(id: string) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/chat/conversations/` + id ;
+  return this.http.get(this.url,{headers:headers});
+}
+public getallmessages(id: string) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/chat/messages/` + id ;
+  return this.http.get(this.url,{headers:headers});
+}
+public sendmessages(body:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/chat/insert-message`;
+  return this.http.post(this.url,body,{headers:headers});
+}
+public getnewmessages(convid: any,lastid:any) {
+  const headers = new HttpHeaders()
+  .set('content-type', 'application/json')
+  .set('Authorization', 'Bearer'+' '+ this.accesstoken)
+  this.url = `${this.endPoint1}/chat/get-new-messages/` + convid +`/` + lastid +`?Content-Type=` + "application/json" +`&Authorization=Bearer`+ this.accesstoken;
+  console.log("url",this.url)
+  return this.http.get(this.url,{headers:headers});
+}
+
 }

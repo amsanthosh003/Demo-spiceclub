@@ -26,6 +26,9 @@ export class HomeComponent implements OnInit {
   tokentype: any;
   otpform!: FormGroup;
   useer_id: any;
+  loginotpform!: FormGroup;
+  loginverifyform!: FormGroup;
+  otpuserid: any;
 
   
 
@@ -53,6 +56,13 @@ export class HomeComponent implements OnInit {
 
     this.otpform = this.fb.group({ 
       otp: ['', [Validators.required]],
+    });
+
+    this.loginotpform = this.fb.group({ 
+      phone: ['', [Validators.required]],
+    });
+    this.loginverifyform = this.fb.group({ 
+      otp_code: ['', [Validators.required]],
     });
  
   }
@@ -174,11 +184,113 @@ export class HomeComponent implements OnInit {
       }
     );   
   }
+  loginotp(content: any){
+    this.modalService.open(content, {
+      ariaLabelledBy:'modal-basic-title',
+      size: 'lg',
+    });
+  }
+  loginotpverify(content: any){
+    this.modalService.open(content, {
+      ariaLabelledBy:'modal-basic-title',
+      size: 'lg',
+    });
+  }
+
+  requestloginotp(form: FormGroup,content:any) {  
+    if (this.loginotpform.invalid) {  
+      console.log("err2",);
+      return;  
+    } else {
+      let edata1={
+        phone:form.value.phone,
+        // mobile_no :""+this.registerForm.controls['Mobile'].value,
+      } 
+      console.log("edata1",edata1);
+      this.authService.reqotplogin(edata1).subscribe( (res) => {          
+             console.log(res); 
+             this.otpuserid=res.user_id
+            if (res) {
+              if (res.message == "OTP code is sent to Mobile ") {
+                console.log("OTP code is sent to Mobile '");               
+               
+             
+              
+              this.modalService.open(content, {
+                ariaLabelledBy:'modal-basic-title',
+                size: 'lg',
+              });
+              return;
+            }
+
+            } else {
+
+              console.log("else err"); 
+         
+            }
+            
+          },
+          (error:any) => {   
+            console.log("test","",error.error);
+         
+           
+          }
+        );
+    }
+  }
+
+  verifyloginotp(form: FormGroup) {  
+    if (this.loginverifyform.invalid) {  
+      console.log("err2",);
+      return;  
+    } else {
+      let edata1={
+        user_id:this.otpuserid,
+        otp_code:form.value.otp_code,
+        // mobile_no :""+this.registerForm.controls['Mobile'].value,
+      } 
+      console.log("edata",edata1);
+      this.authService.otplogin(edata1).subscribe( (res) => {          
+             console.log("loginuser",res); 
+            if (res) {
+              if (res.message == "User not found") {
+                console.log("User not found");               
+                return;
+              }
+              if (res.message == "Unauthorized") {  
+                console.log("Unauthorized");  
+              }
+              if (res.message == "Successfully logged in") {  
+                console.log("hiii you are logged in");
+                this.router.navigate(['/main']);
+                this.modalService.dismissAll();
+              }
+            } else {
+              console.log("Invalid Login"); 
+            }
+            
+          },
+          (error:any) => {   
+            console.log("test","",error.error);
+            if(error.error.message=="User not found"){
+              console.log("User not found"); 
+            }else if(error.error.message=="Unauthorized"){
+              console.log("Unauthorized"); 
+            }
+            else if(error.error.message=="Please verify your account"){
+              console.log("Please verify your account"); 
+              this.resend();
+            //  this.otpSubmit(content);      
+            }
+            else{
+              console.log("error",error.error.message);
+            }  
+          }
+        );
+    }
+  }
+ 
 
 }
 
-
-function otpRecord(otpRecord: any) {
-  throw new Error('Function not implemented.');
-}
 

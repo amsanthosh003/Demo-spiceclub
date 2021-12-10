@@ -164,7 +164,7 @@ addtocart(_id:any){
     id : _id,
     variant:"",
     user_id: this.userid,
-    quantity: this.quantityy
+    quantity: this.quantityy  
   }
   console.log(edata);  
   this.request.addtocart(edata).subscribe((res: any) => {
@@ -173,7 +173,6 @@ addtocart(_id:any){
     }
     else  {
       console.log("error",res);
-
     }
   }, (error: any) => {
     console.log("error",error);

@@ -1,15 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RequestService } from 'src/app/service/request.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../../core/models/user';
+import { AuthService } from 'src/app/service/auth.service';
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
+  @ViewChild('form') form!: ElementRef;
+  accessCode: any;
+  encRequestRes : any;
+  order_no : any = 'qaz234567';
+  testAmount : any = '10';
+  selectedAddress : any = {
+    name : 'testing',
+    address : 'test address',
+    city : 'test city',
+    pincode : '23456',
+    state : 'state test',
+    phone : '1234567890'
+  }
+ 
+
+  
+
   loadingIndicator: boolean | undefined;
   Cart: any;
   currentUserSubject: BehaviorSubject<User>;
@@ -31,8 +50,18 @@ export class CartComponent implements OnInit {
   Paymenttype: any;
   payytype: any;
   comment!: FormGroup;
+  combined_orderid: any;
+  grandtotal: any;
+  username: any;
+  userphone: any;
+  useremail: any;
+  city: any;
+  pincode: any;
+  phone: any;
+  address: any;
+  state_name: any;
 
-  constructor(private router: Router,private fb: FormBuilder,private request: RequestService,) {
+  constructor(private router: Router, private authService: AuthService,private fb: FormBuilder,private request: RequestService,) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser')||'{}')
       
@@ -43,11 +72,17 @@ export class CartComponent implements OnInit {
      this.userid=this.currentdetail.user.id;
      this.accesstoken=this.currentdetail.access_token;
      this.tokentype=this.currentdetail.token_type;
+     this.username=this.currentdetail.user.name;
+     this.userphone=this.currentdetail.user.phone;
+     this.useremail=this.currentdetail.user.email;
      console.log("currentuserid=", this.userid);
      console.log("currentuserdetail=", this.currentdetail);
    }
 
   ngOnInit(): void {
+
+    this.accessCode = 'YOURACCESSCODEGOESHERE';
+
     this.viewcart();
     this.viewcart3();
 
@@ -124,6 +159,7 @@ export class CartComponent implements OnInit {
       this.Grandtot=this.Summery.grand_total
       console.log("summery",response);    
       console.log("grand total",this.Summery.grand_total); 
+      this.grandtotal=this.Summery.grand_total
     // this. processdata()
       setTimeout(() => {
         this.loadingIndicator = false;
@@ -149,6 +185,12 @@ export class CartComponent implements OnInit {
   shippingcost(row:any){
     console.log("row id",row.city_name); 
     console.log("row id",row.id);
+    this.city=row.city_name;
+    this.pincode=row.postal_code;
+    this.phone=row.phone;
+    this.address=row.address;
+    this.state_name=row.state_name
+
     let edata2={
       user_id:this.userid,
       address_id:row.id
@@ -191,7 +233,8 @@ export class CartComponent implements OnInit {
     }
     console.log("edatat",edata); 
     this.request.placeorder(edata).subscribe((response: any) => {
-      console.log("Placeorder",response);     
+      console.log("Placeorder",response); 
+      this.combined_orderid =response.combined_order_id    
        
     });
   }
@@ -218,5 +261,70 @@ export class CartComponent implements OnInit {
     });
   
   }
+
+
+  checkout(){
+    let redirect_url = 'http%3A%2F%2Flocalhost%3A3008%2Fhandleresponse'; 
+    let request = `merchant_id=BDSKUATY&order_id=${this.order_no}&currency=INR&amount=${this.grandtotal}&redirect_url=${redirect_url}&cancel_url=${redirect_url}&language=EN&billing_name=${this.username}&billing_address=${this.address}&billing_city=${this.city}&billing_state=${this.state_name}&billing_zip=${this.pincode}&billing_country=India&billing_tel=${this.phone}
+    &delivery_name=${this.username}&delivery_address=${this.address}&delivery_city=${this.city}&delivery_state=${this.state_name}&delivery_zip=${this.pincode}&delivery_country=India&delivery_tel=${this.phone}&billing_email=${this.useremail}`
+  console.log("request",request)
+    // this.authService.encryptdata(request).subscribe(
+    //   (      data: { [x: string]: any; }) => {
+    //   console.log('---------------------', data['response'])
+    //   this.encRequestRes = data['response']; 
+    //       setTimeout(()=>{
+    //           this.form.nativeElement.submit();
+    //       },1000)
+    //   }, (error: any) => {
+    //   console.log(error)
+    //   }
+    //   );
+  }
+
+
+
+
+// method 2
+  // pay() {
+    
+  //   // this.cartValue contains all the order information which is sent to the server
+  //   // You can use this package to encrypt - https://www.npmjs.com/package/node-ccavenue/
+  //   this.authService.getEnc(this.orderInformation).subscribe((response: any) => {
+  //     this.encRequest = response.encRequest;
+  //     setTimeout((_: any) => this.form.nativeElement.submit());
+  //   }, (error: any) => {
+  //     console.log(error);
+  //   });
+  // }
+
+
+  // razorpay
+// initPay() {
+//  let options = {
+//     "key": "rzp_test_HTQz79bVMhpN4L", 
+//     "amount": this.grandtotal.replace('Rs',""),
+//     "currency": "INR",
+//     "name": "Acme Corp",
+//     "description": "Test Transaction",
+//     "image": "https://example.com/your_logo",
+//     "order_id": this.combined_orderid,
+//     "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+//     "prefill": {
+//         "name": this.username,
+//         "email": this.useremail,
+//         "contact": this.userphone
+//     },
+//     "notes": {
+//         "address": "Razorpay Corporate Office"
+//     },
+//     "theme": {
+//         "color": "#3399cc"
+//     }
+// };
+//   console.log("options,",options)
+//   let rzp1 = new this.authService.nativeWindow.Razorpay(options);
+//   rzp1.open();
+//   console.log("works");
+// }
 
 }
